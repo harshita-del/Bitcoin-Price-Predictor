@@ -6,24 +6,22 @@ model = joblib.load("bitcoin_model.pkl")
 
 st.title("Bitcoin Price Predictor")
 
-st.write(
-    "Predict the next day's Bitcoin closing price using a Linear Regression model trained on historical Bitcoin data."
-)
-
-st.info("Model R² Score: 0.9894")
-
-price = st.number_input(
-    "Enter today's Bitcoin closing price",
-    min_value=0.0,
-    value=40000.0
-)
+open_price = st.number_input("Open Price")
+high_price = st.number_input("High Price")
+low_price = st.number_input("Low Price")
+close_price = st.number_input("Close Price")
+volume = st.number_input("Volume")
 
 if st.button("Predict"):
 
-    data = pd.DataFrame({"Close": [price]})
+    data = pd.DataFrame({
+        "Open": [open_price],
+        "High": [high_price],
+        "Low": [low_price],
+        "Close": [close_price],
+        "Volume": [volume]
+    })
 
     prediction = model.predict(data)
 
-    st.success(
-        f"Predicted next day Bitcoin price: ${prediction[0]:,.2f}"
-    )
+    st.success(f"Predicted Next Day Price: ${prediction[0]:,.2f}")
